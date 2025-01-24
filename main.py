@@ -26,3 +26,8 @@ try:
 except json.JSONDecodeError as e:
     print("Invalid JSON format:", e)
 
+
+"""
+Example of using:
+py main.py --endpoint people,planets --filters "{'people': ['films', 'species'], 'planets': ['films', 'residents']}" --output swapi_data.xlsx
+"""
