@@ -19,12 +19,12 @@ parser.add_argument('--output', '-o', help='Output Excel file', default='swapi_d
 args = parser.parse_args()
 endpoints = args.endpoint.split(',')
 
-if args.source == "api":
-    client = SWAPIClient(base_url="https://swapi.dev/api/")
-elif args.source == "excel":
-    client = ExcelSWAPIClient(file_path=r"C:\Users\Lenovo\Desktop\BonBinBon.ods")
+if "https://swapi.dev/api/" in args.source:
+    client = SWAPIClient(base_url=args.source)
+elif "C:" in args.source:
+    client = ExcelSWAPIClient(file_path=args.source)
 else:
-    raise ValueError("Invalid source. Use 'api' or 'excel'")
+    raise ValueError("Invalid source")
 
 
 manager = SWAPIDataManager(client)
