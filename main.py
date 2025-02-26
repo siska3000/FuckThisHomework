@@ -22,7 +22,7 @@ endpoints = args.endpoint.split(',')
 if "https://swapi.dev/api/" in args.source:
     client = SWAPIClient(base_url=args.source)
 elif "C:" in args.source:
-    client = ExcelSWAPIClient(file_path=args.source)
+    client = ExcelSWAPIClient(args.source)
 else:
     raise ValueError("Invalid source")
 
@@ -47,8 +47,6 @@ try:
 
 except json.JSONDecodeError as e:
     print("Invalid JSON format:", e)
-except Exception as e:
-    print(f"Error: {e}")
 
 """
 Example of using:
