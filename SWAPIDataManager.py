@@ -1,21 +1,19 @@
 import logging
 import pandas as pd
 
-from Processors.EntityProcesor import EntityProcessor
 from FetchClass import SWAPIClient
+from interfaces import DataFetcher, DataProcessor, DataSaver
+
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
-class SWAPIDataManager:
-    def __init__(self, client):
+class SWAPIDataManager(DataFetcher, DataProcessor, DataSaver):
+    def __init__(self, client: SWAPIClient):
         self.client = client
         self.df_list = {}
         self.processors = {}
-
-    def register_processor(self, endpoint: str, processor):
-        self.processors[endpoint] = processor
 
     def fetch_entity(self, endpoint: str):
         raw_data = self.client.fetch_json(endpoint)
@@ -28,6 +26,9 @@ class SWAPIDataManager:
         else:
             self.df_list[endpoint] = pd.DataFrame(raw_data)
             logger.info(f"Retrieved {len(raw_data)} records for {endpoint}. Columns: {self.df_list[endpoint].columns.tolist()}")
+
+    def register_processor(self, endpoint: str, processor):
+        self.processors[endpoint] = processor
 
     def apply_filter(self, endpoint: str, columns_to_drop: list):
         if endpoint in self.df_list:

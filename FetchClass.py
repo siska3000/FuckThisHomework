@@ -18,7 +18,6 @@ class SWAPIClient:
 
             logger.info(f"Отримання даних з: {url}")
 
-
             response = requests.get(url)
             response.raise_for_status()
             data = response.json()
